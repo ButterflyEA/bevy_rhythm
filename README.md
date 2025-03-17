@@ -6,7 +6,7 @@ Original Tutorial:: [https://caballerocoll.com/blog/bevy-rhythm-game/](https://c
 
 Original GitHub Repository: [https://github.com/guimcaballero/bevy_rhythm](https://github.com/guimcaballero/bevy_rhythm)
 
-I am currently in the process of migrating the tutorial to [bevy](https://bevyengine.org/) version 0.15.3
+I am currently in the process of migrating the tutorial to [Bevy](https://bevyengine.org/) version 0.15.3
 
 # Licence
 This project adheres to the [MIT licence](https://github.com/ButterflyEA/bevy_rhythm/blob/main/LICENSE), consistent with the licensing of the original tutorial. 
