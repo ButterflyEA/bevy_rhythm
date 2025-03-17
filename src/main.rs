@@ -1,0 +1,41 @@
+
+mod arrows;
+mod consts;
+mod types;
+mod ui;
+mod score;
+
+use bevy::prelude::*;
+use arrows::ArrowsPlugin;
+use ui::UIPlugin;
+use score::ScoreResource;
+
+fn main() {
+    App::new()
+        .insert_resource(ScoreResource::new())
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                title: "Rhythm".to_string(),
+                resolution: (800.0, 600.0).into(),
+                ..Default::default()
+            }),
+            ..Default::default()
+        }))
+        .add_plugins(ArrowsPlugin)
+        .add_plugins(UIPlugin)
+        .add_systems(Startup, setup_camera)
+        .add_systems(Update, types::exit_on_esc) // System to handle ESC key
+        .run();
+}
+
+
+
+fn setup_camera(mut commands: Commands) {
+    let config = types::load_config();
+    // Spawn a camera (required to see anything in 2D)
+    commands.spawn(Camera2d::default());
+    commands.insert_resource(config);
+        
+}
+
+
