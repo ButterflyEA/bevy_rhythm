@@ -4,11 +4,13 @@ mod consts;
 mod types;
 mod ui;
 mod score;
+mod audio;
 
 use bevy::prelude::*;
 use arrows::ArrowsPlugin;
 use ui::UIPlugin;
 use score::ScoreResource;
+use audio::AudioPlugin;
 
 fn main() {
     App::new()
@@ -23,6 +25,7 @@ fn main() {
         }))
         .add_plugins(ArrowsPlugin)
         .add_plugins(UIPlugin)
+        .add_plugins(AudioPlugin)
         .add_systems(Startup, setup)
         .add_systems(Update, types::exit_on_esc) // System to handle ESC key
         .run();
