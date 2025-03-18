@@ -23,15 +23,15 @@ fn main() {
         }))
         .add_plugins(ArrowsPlugin)
         .add_plugins(UIPlugin)
-        .add_systems(Startup, setup_camera)
+        .add_systems(Startup, setup)
         .add_systems(Update, types::exit_on_esc) // System to handle ESC key
         .run();
 }
 
 
 
-fn setup_camera(mut commands: Commands) {
-    let config = types::load_config();
+fn setup(mut commands: Commands , asset_server: Res<AssetServer>) {
+    let config = types::load_config("test.toml", &asset_server);
     // Spawn a camera (required to see anything in 2D)
     commands.spawn(Camera2d::default());
     commands.insert_resource(config);
