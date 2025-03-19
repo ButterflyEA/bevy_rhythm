@@ -102,7 +102,7 @@ impl ArrowTime {
     }
 }
 
-#[derive(Resource, Debug)]
+#[derive(Resource)]
 pub struct SongConfig {
     pub name: String,
     pub song_audio: Handle<AudioSource>,

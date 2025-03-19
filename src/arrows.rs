@@ -39,8 +39,8 @@ struct Arrow{
     direction: Directions,
 }
 
-#[derive(Resource)]
-struct SpawnTimer(Timer);
+// #[derive(Resource)]
+// struct SpawnTimer(Timer);
 
 fn spawn_arrows(
     mut commands: Commands,
@@ -102,13 +102,27 @@ fn spawn_arrows(
 fn move_arrows(time: Res<Time>, mut query: Query<(&mut Transform, &Arrow)>) {
     for (mut transform, arrow) in query.iter_mut() {
         transform.translation.x += time.delta_secs() * arrow.speed.value();
+
+        let distance_after_target = transform.translation.x - (TARGET_POSITION + THRESHOLD);
+        if distance_after_target >= 0.02 {
+            transform.translation.y -= time.delta_secs() * distance_after_target * 2.;
+
+            // Change the scale according to how far away the arrow is
+            let scale = ((100. - distance_after_target / 3.) / 100.).max(0.2);
+            transform.scale = Vec3::splat(scale);
+
+            // Rotate the arrow according to distance and speed
+            transform.rotate(Quat::from_rotation_z(
+                -distance_after_target * arrow.speed.multiplier() / 460.,
+            ));
+        }
     }
 }
 
 pub struct ArrowsPlugin;
 impl Plugin for ArrowsPlugin {
     fn build(&self, app: &mut App) {
-        app.insert_resource(SpawnTimer(Timer::from_seconds(1.0, TimerMode::Repeating)));
+        //app.insert_resource(SpawnTimer(Timer::from_seconds(1.0, TimerMode::Repeating)));
         app.add_systems(Startup, setup_arrow_materials);
         app.add_systems(Update, setup_target_arrows);
         app.add_systems(Update, spawn_arrows);
