@@ -1,10 +1,7 @@
 use bevy::prelude::*;
 use bevy::reflect::TypePath;
-use bevy::render::{mesh::MeshVertexBufferLayoutRef,
-                    render_resource::{AsBindGroup, 
-                        RenderPipelineDescriptor, ShaderRef, 
-                        SpecializedMeshPipelineError}};
-use bevy::sprite::{Material2d, Material2dKey};
+use bevy::render::render_resource::{AsBindGroup, ShaderRef};
+use bevy::sprite::{Material2d,Material2dPlugin};
+
 
 pub mod background;
-//use background::*;

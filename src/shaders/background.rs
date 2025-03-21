@@ -1,36 +1,19 @@
-
-
 use super::*;
 
 #[derive(Component)]
 pub struct Background;
 
-pub const VERTEX_SHADER_ASSET_PATH: &str = "background.vert";
-pub const FRAGMENT_SHADER_ASSET_PATH: &str = "background.frag";
+pub const SHADER_ASSET_PATH: &str = "shaders/background.wgsl";
 
 #[derive(Asset, TypePath, AsBindGroup, Clone)]
-pub struct BackgroundShader{}
+pub struct BackgroundShader{
+    #[uniform(0)]
+    screen_size: Vec2,
+}
 
 impl Material2d for BackgroundShader {
-    fn vertex_shader() ->ShaderRef {
-        VERTEX_SHADER_ASSET_PATH.into()
-    }
-
     fn fragment_shader() -> ShaderRef {
-        FRAGMENT_SHADER_ASSET_PATH.into()
-    }
-
-        // Bevy assumes by default that vertex shaders use the "vertex" entry point
-    // and fragment shaders use the "fragment" entry point (for WGSL shaders).
-    // GLSL uses "main" as the entry point, so we must override the defaults here
-    fn specialize(
-        descriptor: &mut RenderPipelineDescriptor,
-        _layout: &MeshVertexBufferLayoutRef,
-        _key: Material2dKey<Self>,
-    ) -> Result<(), SpecializedMeshPipelineError> {
-        descriptor.vertex.entry_point = "main".into();
-        descriptor.fragment.as_mut().unwrap().entry_point = "main".into();
-        Ok(())
+        SHADER_ASSET_PATH.into()
     }
 }
 
@@ -48,12 +31,14 @@ pub fn setup_background(
         Mesh::from(Rectangle::new(window_width, window_height),
 ));
 
-    let material = materials.add(BackgroundShader{});
+    let material = materials.add(BackgroundShader{
+        screen_size: Vec2::new(window_width, window_height),
+    });
 
     commands.spawn((
         Mesh2d(mesh),
         MeshMaterial2d(material),
-        Transform::from_translation(Vec3::new(window_width + 10., window_height + 10., 1.0)),
+        Transform::from_scale(Vec3::new(window_width, window_height, -1.0)),
         )
     ).insert(Background);
 
@@ -62,6 +47,8 @@ pub fn setup_background(
 pub struct ShadersPlugin;
 impl Plugin for ShadersPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, setup_background);
+        app
+        .add_plugins(Material2dPlugin::<BackgroundShader>::default())
+        .add_systems(Startup, setup_background);
     }
 }

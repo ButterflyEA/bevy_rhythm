@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-bevy = { version = "0.15.3", features = ["mp3"] }
+bevy = { version = "0.15.3", features = ["mp3", "shader_format_glsl"] }
 rand = "0.9.0"
 toml = "0.8.20"
 serde = "1.0.219"

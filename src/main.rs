@@ -15,6 +15,7 @@ use score::ScoreResource;
 use audio::AudioPlugin;
 use shaders::background::ShadersPlugin;
 
+
 fn main() {
     App::new()
         .insert_resource(ScoreResource::new())
@@ -39,6 +40,7 @@ fn main() {
 
 fn setup(mut commands: Commands , asset_server: Res<AssetServer>) {
     let config = types::load_config("test.toml", &asset_server);
+    println!("Song name: {}", config.name);
     // Spawn a camera (required to see anything in 2D)
     commands.spawn(Camera2d::default());
     commands.insert_resource(config);
